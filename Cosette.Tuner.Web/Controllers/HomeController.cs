@@ -10,11 +10,11 @@ namespace Cosette.Tuner.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private IMapper _mapper;
-        private TestService _testService;
-        private ChromosomeService _chromosomeService;
-        private GenerationService _generationService;
-        private ChartJsService _chartJsService;
+        private readonly IMapper _mapper;
+        private readonly TestService _testService;
+        private readonly ChromosomeService _chromosomeService;
+        private readonly GenerationService _generationService;
+        private readonly ChartJsService _chartJsService;
 
         public HomeController(IMapper mapper, TestService testService, ChromosomeService chromosomeService, GenerationService generationService, ChartJsService chartJsService)
         {

@@ -7,10 +7,10 @@ namespace Cosette.Tuner.Texel.Engine
 {
     public class EngineOperator
     {
-        private string _enginePath;
-        private string _engineArguments;
+        private readonly string _enginePath;
+        private readonly string _engineArguments;
         private Process _engineProcess;
-        private Dictionary<string, string> _options;
+        private readonly Dictionary<string, string> _options;
 
         public EngineOperator(string path, string arguments)
         {

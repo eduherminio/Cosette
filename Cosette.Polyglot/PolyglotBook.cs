@@ -9,8 +9,8 @@ namespace Cosette.Polyglot
 {
     public class PolyglotBook
     {
-        private string _bookFile;
-        private Random _random;
+        private readonly string _bookFile;
+        private readonly Random _random;
 
         public PolyglotBook(string bookFile)
         {

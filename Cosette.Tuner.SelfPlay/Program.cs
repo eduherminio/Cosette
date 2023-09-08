@@ -38,8 +38,10 @@ namespace Cosette.Tuner.SelfPlay
             var chromosome = new EvaluationChromosome();
             var population = new Population(SettingsLoader.Data.MinPopulation, SettingsLoader.Data.MaxPopulation, chromosome);
 
-            var geneticAlgorithm = new GeneticAlgorithm(population, fitness, selection, crossover, mutation);
-            geneticAlgorithm.Termination = new GenerationNumberTermination(SettingsLoader.Data.GenerationsCount);
+            var geneticAlgorithm = new GeneticAlgorithm(population, fitness, selection, crossover, mutation)
+            {
+                Termination = new GenerationNumberTermination(SettingsLoader.Data.GenerationsCount)
+            };
             geneticAlgorithm.GenerationRan += GeneticAlgorithm_GenerationRan;
 
             _generationStopwatch.Start();

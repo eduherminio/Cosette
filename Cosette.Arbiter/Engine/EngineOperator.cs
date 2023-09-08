@@ -12,8 +12,8 @@ namespace Cosette.Arbiter.Engine
     {
         public Lazy<string> ExecutableHash;
 
-        private string _enginePath;
-        private string _engineArguments;
+        private readonly string _enginePath;
+        private readonly string _engineArguments;
         private Process _engineProcess;
 
         public EngineOperator(string path, string arguments)

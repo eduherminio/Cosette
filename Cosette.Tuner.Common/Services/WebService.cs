@@ -10,14 +10,16 @@ namespace Cosette.Tuner.Common.Services
 {
     public class WebService
     {
-        private HttpClient _httpClient;
+        private readonly HttpClient _httpClient;
         private bool _enabled;
 
         public WebService()
         {
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("http://localhost:42000/api/");
-            _httpClient.Timeout = new TimeSpan(0, 0, 0, 5);
+            _httpClient = new HttpClient
+            {
+                BaseAddress = new Uri("http://localhost:42000/api/"),
+                Timeout = new TimeSpan(0, 0, 0, 5)
+            };
         }
 
         public async Task EnableIfAvailable()

@@ -10,7 +10,7 @@ namespace Cosette.Tuner.Web.Services
 {
     public class ChromosomeService
     {
-        private DatabaseContext _databaseContext;
+        private readonly DatabaseContext _databaseContext;
 
         public ChromosomeService(DatabaseContext databaseContext)
         {

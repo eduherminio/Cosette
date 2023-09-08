@@ -10,10 +10,10 @@ namespace Cosette.Tuner.Texel.Genetics
 {
     public class EvaluationFitness : IFitness
     {
-        private int _testId;
-        private WebService _webService;
+        private readonly int _testId;
+        private readonly WebService _webService;
 
-        private EngineOperator _engineOperator;
+        private readonly EngineOperator _engineOperator;
 
         public EvaluationFitness(int testId, WebService webService)
         {

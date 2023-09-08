@@ -10,10 +10,10 @@ namespace Cosette.Tuner.Web.Controllers
 {
     public class ApiController : Controller
     {
-        private IMapper _mapper;
-        private TestService _testService;
-        private ChromosomeService _chromosomeService;
-        private GenerationService _generationService;
+        private readonly IMapper _mapper;
+        private readonly TestService _testService;
+        private readonly ChromosomeService _chromosomeService;
+        private readonly GenerationService _generationService;
 
         public ApiController(IMapper mapper, TestService testService, ChromosomeService chromosomeService, GenerationService generationService)
         {
@@ -25,7 +25,7 @@ namespace Cosette.Tuner.Web.Controllers
 
         [HttpGet]
         [Route("api/ping")]
-        public async Task<IActionResult> Ping()
+        public IActionResult Ping()
         {
             return new OkResult();
         }

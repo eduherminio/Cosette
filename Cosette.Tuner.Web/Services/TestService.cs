@@ -11,7 +11,7 @@ namespace Cosette.Tuner.Web.Services
 {
     public class TestService
     {
-        private DatabaseContext _databaseContext;
+        private readonly DatabaseContext _databaseContext;
 
         public TestService(DatabaseContext databaseContext)
         {

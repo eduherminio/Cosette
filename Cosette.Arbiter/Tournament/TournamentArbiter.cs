@@ -10,10 +10,10 @@ namespace Cosette.Arbiter.Tournament
 {
     public class TournamentArbiter
     {
-        private List<TournamentParticipant> _participants;
-        private List<long> _gamesDuration;
-        private TournamentScheduler _scheduler;
-        private PolyglotBook _polyglotBook;
+        private readonly List<TournamentParticipant> _participants;
+        private readonly List<long> _gamesDuration;
+        private readonly TournamentScheduler _scheduler;
+        private readonly PolyglotBook _polyglotBook;
 
         public TournamentArbiter()
         {

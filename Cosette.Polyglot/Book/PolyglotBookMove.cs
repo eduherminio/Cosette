@@ -12,7 +12,7 @@ namespace Cosette.Polyglot.Book
 
         public static PolyglotBookMove Zero = new PolyglotBookMove();
 
-        private ushort _data;
+        private readonly ushort _data;
 
         public static bool operator ==(PolyglotBookMove a, PolyglotBookMove b)
         {

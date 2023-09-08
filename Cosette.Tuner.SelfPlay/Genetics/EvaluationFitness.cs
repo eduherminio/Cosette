@@ -12,11 +12,11 @@ namespace Cosette.Tuner.SelfPlay.Genetics
 {
     public class EvaluationFitness : IFitness
     {
-        private int _testId;
-        private WebService _webService;
-        private EngineOperator _referenceEngineOperator;
-        private EngineOperator _experimentalEngineOperator;
-        private PolyglotBook _polyglotBook;
+        private readonly int _testId;
+        private readonly WebService _webService;
+        private readonly EngineOperator _referenceEngineOperator;
+        private readonly EngineOperator _experimentalEngineOperator;
+        private readonly PolyglotBook _polyglotBook;
 
         public EvaluationFitness(int testId, WebService webService)
         {
@@ -134,7 +134,7 @@ namespace Cosette.Tuner.SelfPlay.Genetics
             return fitness;
         }
 
-        private int CalculateEloPerformance(int wins, int losses, int draws)
+        private static int CalculateEloPerformance(int wins, int losses, int draws)
         {
             return 400 * (wins - losses) / (wins + losses + draws);
         }

@@ -9,11 +9,9 @@ namespace Cosette.Arbiter.Settings
 
         public static void Init(string settingsPath)
         {
-            using (var streamReader = new StreamReader(settingsPath))
-            {
-                var content = streamReader.ReadToEnd();
-                Data = JsonConvert.DeserializeObject<SettingsModel>(content);
-            }
+            using var streamReader = new StreamReader(settingsPath);
+            var content = streamReader.ReadToEnd();
+            Data = JsonConvert.DeserializeObject<SettingsModel>(content);
         }
     }
 }

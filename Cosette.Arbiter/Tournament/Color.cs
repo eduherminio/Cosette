@@ -1,9 +1,8 @@
-﻿namespace Cosette.Arbiter.Tournament
+﻿namespace Cosette.Arbiter.Tournament;
+
+public enum Color
 {
-    public enum Color
-    {
-        None = 0,
-        White = 1,
-        Black = -1
-    }
+    None = 0,
+    White = 1,
+    Black = -1
 }

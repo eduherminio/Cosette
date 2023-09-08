@@ -6,138 +6,137 @@ using System.Security.Cryptography;
 using System.Text;
 using Cosette.Arbiter.Settings;
 
-namespace Cosette.Arbiter.Engine
+namespace Cosette.Arbiter.Engine;
+
+public class EngineOperator
 {
-    public class EngineOperator
+    public Lazy<string> ExecutableHash;
+
+    private readonly string _enginePath;
+    private readonly string _engineArguments;
+    private Process _engineProcess;
+
+    public EngineOperator(string path, string arguments)
     {
-        public Lazy<string> ExecutableHash;
+        _enginePath = path;
+        _engineArguments = arguments;
 
-        private readonly string _enginePath;
-        private readonly string _engineArguments;
-        private Process _engineProcess;
+        ExecutableHash = new Lazy<string>(GetExecutableHash);
+    }
 
-        public EngineOperator(string path, string arguments)
+    public void Init()
+    {
+        _engineProcess = Process.Start(new ProcessStartInfo
         {
-            _enginePath = path;
-            _engineArguments = arguments;
+            FileName = _enginePath,
+            Arguments = _engineArguments,
+            CreateNoWindow = true,
+            RedirectStandardInput = true,
+            RedirectStandardOutput = true
+        });
 
-            ExecutableHash = new Lazy<string>(GetExecutableHash);
+        Write("uci");
+        WaitForMessage("uciok");
+
+        Write("debug off");
+        Write("isready");
+        WaitForMessage("readyok");
+
+        ApplyOptions();
+
+        Write("isready");
+        WaitForMessage("readyok");
+    }
+
+    public void Restart()
+    {
+        if (!_engineProcess.HasExited)
+        {
+            _engineProcess.Close();
         }
 
-        public void Init()
+        Init();
+        ApplyOptions();
+    }
+
+    public void InitNewGame()
+    {
+        Write("ucinewgame");
+        Write("isready");
+        WaitForMessage("readyok");
+    }
+
+    public void ApplyOptions()
+    {
+        SettingsLoader.Data.Options.ForEach(Write);
+    }
+
+    public BestMoveData Go(List<string> moves, int whiteClock, int blackClock)
+    {
+        var bestMoveData = new BestMoveData();
+        var movesJoined = string.Join(' ', moves);
+
+        if (moves.Count > 0)
         {
-            _engineProcess = Process.Start(new ProcessStartInfo
-            {
-                FileName = _enginePath,
-                Arguments = _engineArguments,
-                CreateNoWindow = true,
-                RedirectStandardInput = true,
-                RedirectStandardOutput = true
-            });
-
-            Write("uci");
-            WaitForMessage("uciok");
-
-            Write("debug off");
+            Write($"position startpos moves {movesJoined}");
             Write("isready");
             WaitForMessage("readyok");
-
-            ApplyOptions();
-
-            Write("isready");
-            WaitForMessage("readyok");
         }
 
-        public void Restart()
+        Write($"go wtime {whiteClock} btime {blackClock} winc {SettingsLoader.Data.IncTime} binc {SettingsLoader.Data.IncTime}");
+
+        while (true)
         {
-            if (!_engineProcess.HasExited)
+            var response = Read();
+            if (response.StartsWith("info depth"))
             {
-                _engineProcess.Close();
+                bestMoveData.LastInfoData = InfoData.FromString(response);
             }
-
-            Init();
-            ApplyOptions();
-        }
-
-        public void InitNewGame()
-        {
-            Write("ucinewgame");
-            Write("isready");
-            WaitForMessage("readyok");
-        }
-
-        public void ApplyOptions()
-        {
-            SettingsLoader.Data.Options.ForEach(Write);
-        }
-
-        public BestMoveData Go(List<string> moves, int whiteClock, int blackClock)
-        {
-            var bestMoveData = new BestMoveData();
-            var movesJoined = string.Join(' ', moves);
-
-            if (moves.Count > 0)
+            else if (response.StartsWith("bestmove"))
             {
-                Write($"position startpos moves {movesJoined}");
-                Write("isready");
-                WaitForMessage("readyok");
+                bestMoveData.BestMove = response.Split(' ')[1];
+                break;
             }
-
-            Write($"go wtime {whiteClock} btime {blackClock} winc {SettingsLoader.Data.IncTime} binc {SettingsLoader.Data.IncTime}");
-
-            while (true)
+            else if (response.StartsWith("error"))
             {
-                var response = Read();
-                if (response.StartsWith("info depth"))
-                {
-                    bestMoveData.LastInfoData = InfoData.FromString(response);
-                }
-                else if (response.StartsWith("bestmove"))
-                {
-                    bestMoveData.BestMove = response.Split(' ')[1];
-                    break;
-                }
-                else if (response.StartsWith("error"))
-                {
-                    return null;
-                }
+                return null;
             }
-
-            return bestMoveData;
         }
 
-        public void Write(string message)
+        return bestMoveData;
+    }
+
+    public void Write(string message)
+    {
+        _engineProcess.StandardInput.WriteLine(message);
+    }
+
+    public string Read()
+    {
+        return _engineProcess.StandardOutput.ReadLine();
+    }
+
+    public void WaitForMessage(string message)
+    {
+        while (Read() != message) ;
+    }
+
+    private string GetExecutableHash()
+    {
+        var md5 = MD5.Create();
+        var path = _enginePath == "dotnet" ? _engineArguments : _enginePath;
+
+        using (var streamReader = new StreamReader(path))
         {
-            _engineProcess.StandardInput.WriteLine(message);
+            md5.ComputeHash(streamReader.BaseStream);
         }
 
-        public string Read()
+        var hashBuilder = new StringBuilder();
+        foreach (var b in md5.Hash)
         {
-            return _engineProcess.StandardOutput.ReadLine();
+            hashBuilder.Append(b.ToString("x2"));
         }
 
-        public void WaitForMessage(string message)
-        {
-            while (Read() != message) ;
-        }
-
-        private string GetExecutableHash()
-        {
-            var md5 = MD5.Create();
-            var path = _enginePath == "dotnet" ? _engineArguments : _enginePath;
-
-            using (var streamReader = new StreamReader(path))
-            {
-                md5.ComputeHash(streamReader.BaseStream);
-            }
-
-            var hashBuilder = new StringBuilder();
-            foreach (var b in md5.Hash)
-            {
-                hashBuilder.Append(b.ToString("x2"));
-            }
-
-            return hashBuilder.ToString();
-        }
+        return hashBuilder.ToString();
     }
 }

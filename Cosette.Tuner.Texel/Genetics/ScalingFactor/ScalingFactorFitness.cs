@@ -6,40 +6,39 @@ using Cosette.Tuner.Texel.Settings;
 using Cosette.Tuner.Texel.Web;
 using GeneticSharp;
 
-namespace Cosette.Tuner.Texel.Genetics
+namespace Cosette.Tuner.Texel.Genetics;
+
+public class ScalingFactorFitness : IFitness
 {
-    public class ScalingFactorFitness : IFitness
+    private readonly int _testId;
+    private readonly WebService _webService;
+
+    private readonly EngineOperator _engineOperator;
+
+    public ScalingFactorFitness(int testId, WebService webService)
     {
-        private readonly int _testId;
-        private readonly WebService _webService;
+        _testId = testId;
+        _webService = webService;
 
-        private readonly EngineOperator _engineOperator;
+        _engineOperator = new EngineOperator(SettingsLoader.Data.EnginePath, SettingsLoader.Data.EngineArguments);
+        _engineOperator.Init();
+        _engineOperator.LoadEpd(SettingsLoader.Data.PositionsDatabasePath);
+    }
 
-        public ScalingFactorFitness(int testId, WebService webService)
-        {
-            _testId = testId;
-            _webService = webService;
+    public double Evaluate(IChromosome chromosome)
+    {
+        var stopwatch = Stopwatch.StartNew();
 
-            _engineOperator = new EngineOperator(SettingsLoader.Data.EnginePath, SettingsLoader.Data.EngineArguments);
-            _engineOperator.Init();
-            _engineOperator.LoadEpd(SettingsLoader.Data.PositionsDatabasePath);
-        }
+        var scalingFactor = (double)(int) chromosome.GetGene(0).Value / 1000;
+        var error = _engineOperator.Evaluate(scalingFactor);
 
-        public double Evaluate(IChromosome chromosome)
-        {
-            var stopwatch = Stopwatch.StartNew();
+        var fitness = 1.0 - error;
+        var elapsedTime = (double)stopwatch.ElapsedMilliseconds / 1000;
 
-            var scalingFactor = (double)(int) chromosome.GetGene(0).Value / 1000;
-            var error = _engineOperator.Evaluate(scalingFactor);
+        var chromosomeRequest = RequestsFactory.CreateChromosomeRequest(_testId, fitness, elapsedTime, chromosome);
+        _webService.SendChromosomeData(chromosomeRequest).GetAwaiter().GetResult();
 
-            var fitness = 1.0 - error;
-            var elapsedTime = (double)stopwatch.ElapsedMilliseconds / 1000;
-
-            var chromosomeRequest = RequestsFactory.CreateChromosomeRequest(_testId, fitness, elapsedTime, chromosome);
-            _webService.SendChromosomeData(chromosomeRequest).GetAwaiter().GetResult();
-
-            Console.WriteLine($"[{DateTime.Now}] Run done! Fitness: {fitness}");
-            return fitness;
-        }
+        Console.WriteLine($"[{DateTime.Now}] Run done! Fitness: {fitness}");
+        return fitness;
     }
 }

@@ -1,9 +1,8 @@
-﻿namespace Cosette.Tuner.SelfPlay.Genetics.Game
+﻿namespace Cosette.Tuner.SelfPlay.Genetics.Game;
+
+public enum GameResult
 {
-    public enum GameResult
-    {
-        Draw,
-        Win,
-        Loss
-    }
+    Draw,
+    Win,
+    Loss
 }

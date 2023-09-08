@@ -1,78 +1,77 @@
 ﻿using System.Collections.Generic;
 
-namespace Cosette.Arbiter.Tournament
+namespace Cosette.Arbiter.Tournament;
+
+public class TournamentScheduler
 {
-    public class TournamentScheduler
+    private int _participantsCount;
+    private List<(int playerA, int playerB)> _pairs;
+
+    public void Init(int participantsCount, bool gauntlet)
     {
-        private int _participantsCount;
-        private List<(int playerA, int playerB)> _pairs;
+        _participantsCount = participantsCount;
+        _pairs = new List<(int playerA, int playerB)>();
 
-        public void Init(int participantsCount, bool gauntlet)
+        if (gauntlet)
         {
-            _participantsCount = participantsCount;
-            _pairs = new List<(int playerA, int playerB)>();
-
-            if (gauntlet)
+            for (var gameNumber = 1; gameNumber < _participantsCount; gameNumber++)
             {
-                for (var gameNumber = 1; gameNumber < _participantsCount; gameNumber++)
-                {
-                    _pairs.Add((0, gameNumber));
-                }
+                _pairs.Add((0, gameNumber));
             }
-            else
+        }
+        else
+        {
+            if (_participantsCount % 2 != 0)
             {
-                if (_participantsCount % 2 != 0)
+                _participantsCount++;
+            }
+
+            for (var gameNumber = 0; gameNumber < _participantsCount - 1; gameNumber++)
+            {
+                var firstRow = new List<int>();
+                var secondRow = new List<int>();
+                var teamsCount = _participantsCount / 2;
+
+                firstRow.Add(1);
+
+                var secondParticipant = _participantsCount - gameNumber;
+                var currentParticipant = secondParticipant;
+
+                for (var i = 1; i < teamsCount; i++)
                 {
-                    _participantsCount++;
+                    currentParticipant++;
+                    if (currentParticipant > _participantsCount)
+                    {
+                        currentParticipant = 2;
+                    }
+
+                    firstRow.Add(currentParticipant);
                 }
 
-                for (var gameNumber = 0; gameNumber < _participantsCount - 1; gameNumber++)
+                for (var i = 0; i < teamsCount; i++)
                 {
-                    var firstRow = new List<int>();
-                    var secondRow = new List<int>();
-                    var teamsCount = _participantsCount / 2;
-
-                    firstRow.Add(1);
-
-                    var secondParticipant = _participantsCount - gameNumber;
-                    var currentParticipant = secondParticipant;
-
-                    for (var i = 1; i < teamsCount; i++)
+                    currentParticipant++;
+                    if (currentParticipant > _participantsCount)
                     {
-                        currentParticipant++;
-                        if (currentParticipant > _participantsCount)
-                        {
-                            currentParticipant = 2;
-                        }
-
-                        firstRow.Add(currentParticipant);
+                        currentParticipant = 2;
                     }
 
-                    for (var i = 0; i < teamsCount; i++)
-                    {
-                        currentParticipant++;
-                        if (currentParticipant > _participantsCount)
-                        {
-                            currentParticipant = 2;
-                        }
+                    secondRow.Add(currentParticipant);
+                }
 
-                        secondRow.Add(currentParticipant);
-                    }
+                secondRow.Reverse();
 
-                    secondRow.Reverse();
-
-                    for (var i = 0; i < teamsCount; i++)
-                    {
-                        _pairs.Add((firstRow[i] - 1, secondRow[i] - 1));
-                    }
+                for (var i = 0; i < teamsCount; i++)
+                {
+                    _pairs.Add((firstRow[i] - 1, secondRow[i] - 1));
                 }
             }
         }
+    }
 
-        public (int playerA, int playerB) GetPair(int gameNumber)
-        {
-            var pairIndex = gameNumber % _pairs.Count;
-            return _pairs[pairIndex];
-        }
+    public (int playerA, int playerB) GetPair(int gameNumber)
+    {
+        var pairIndex = gameNumber % _pairs.Count;
+        return _pairs[pairIndex];
     }
 }

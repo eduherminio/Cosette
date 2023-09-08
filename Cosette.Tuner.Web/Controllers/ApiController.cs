@@ -6,60 +6,59 @@ using Cosette.Tuner.Web.Database.Models;
 using Cosette.Tuner.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cosette.Tuner.Web.Controllers
+namespace Cosette.Tuner.Web.Controllers;
+
+public class ApiController : Controller
 {
-    public class ApiController : Controller
+    private readonly IMapper _mapper;
+    private readonly TestService _testService;
+    private readonly ChromosomeService _chromosomeService;
+    private readonly GenerationService _generationService;
+
+    public ApiController(IMapper mapper, TestService testService, ChromosomeService chromosomeService, GenerationService generationService)
     {
-        private readonly IMapper _mapper;
-        private readonly TestService _testService;
-        private readonly ChromosomeService _chromosomeService;
-        private readonly GenerationService _generationService;
+        _mapper = mapper;
+        _testService = testService;
+        _chromosomeService = chromosomeService;
+        _generationService = generationService;
+    }
 
-        public ApiController(IMapper mapper, TestService testService, ChromosomeService chromosomeService, GenerationService generationService)
+    [HttpGet]
+    [Route("api/ping")]
+    public IActionResult Ping()
+    {
+        return new OkResult();
+    }
+
+    [HttpPost]
+    [Route("api/test/register")]
+    public async Task<IActionResult> RegisterTest([FromBody] RegisterTestRequest requestData)
+    {
+        var response = new TestDataResponse
         {
-            _mapper = mapper;
-            _testService = testService;
-            _chromosomeService = chromosomeService;
-            _generationService = generationService;
-        }
+            Id = await _testService.GenerateNewTest(requestData.Type)
+        };
 
-        [HttpGet]
-        [Route("api/ping")]
-        public IActionResult Ping()
-        {
-            return new OkResult();
-        }
+        return new JsonResult(response);
+    }
 
-        [HttpPost]
-        [Route("api/test/register")]
-        public async Task<IActionResult> RegisterTest([FromBody] RegisterTestRequest requestData)
-        {
-            var response = new TestDataResponse
-            {
-                Id = await _testService.GenerateNewTest(requestData.Type)
-            };
+    [HttpPost]
+    [Route("api/generation")]
+    public async Task<IActionResult> Generation([FromBody] GenerationDataRequest requestData)
+    {
+        var generationModel = _mapper.Map<GenerationModel>(requestData);
+        await _generationService.Add(generationModel);
 
-            return new JsonResult(response);
-        }
+        return new OkResult();
+    }
 
-        [HttpPost]
-        [Route("api/generation")]
-        public async Task<IActionResult> Generation([FromBody] GenerationDataRequest requestData)
-        {
-            var generationModel = _mapper.Map<GenerationModel>(requestData);
-            await _generationService.Add(generationModel);
+    [HttpPost]
+    [Route("api/chromosome")]
+    public async Task<IActionResult> Chromosome([FromBody] ChromosomeDataRequest requestData)
+    {
+        var chromosomeModel = _mapper.Map<ChromosomeModel>(requestData);
+        await _chromosomeService.Add(chromosomeModel);
 
-            return new OkResult();
-        }
-
-        [HttpPost]
-        [Route("api/chromosome")]
-        public async Task<IActionResult> Chromosome([FromBody] ChromosomeDataRequest requestData)
-        {
-            var chromosomeModel = _mapper.Map<ChromosomeModel>(requestData);
-            await _chromosomeService.Add(chromosomeModel);
-
-            return new OkResult();
-        }
+        return new OkResult();
     }
 }

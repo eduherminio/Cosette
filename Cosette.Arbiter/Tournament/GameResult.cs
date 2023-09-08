@@ -1,9 +1,8 @@
-﻿namespace Cosette.Arbiter.Tournament
+﻿namespace Cosette.Arbiter.Tournament;
+
+public enum GameResult
 {
-    public enum GameResult
-    {
-        Draw,
-        Win,
-        Loss
-    }
+    Draw,
+    Win,
+    Loss
 }

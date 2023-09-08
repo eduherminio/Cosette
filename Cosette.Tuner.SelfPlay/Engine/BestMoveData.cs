@@ -1,8 +1,7 @@
-﻿namespace Cosette.Tuner.SelfPlay.Engine
+﻿namespace Cosette.Tuner.SelfPlay.Engine;
+
+public class BestMoveData
 {
-    public class BestMoveData
-    {
-        public string BestMove { get; set; }
-        public InfoData LastInfoData { get; set; }
-    }
+    public string BestMove { get; set; }
+    public InfoData LastInfoData { get; set; }
 }

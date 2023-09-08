@@ -9,71 +9,70 @@ using Cosette.Tuner.SelfPlay.Settings;
 using Cosette.Tuner.SelfPlay.Web;
 using GeneticSharp;
 
-namespace Cosette.Tuner.SelfPlay
+namespace Cosette.Tuner.SelfPlay;
+
+public class Program
 {
-    public class Program
+    private static int _testId;
+    private static WebService _webService;
+    private static Stopwatch _generationStopwatch;
+
+    public static async Task Main(string[] args)
     {
-        private static int _testId;
-        private static WebService _webService;
-        private static Stopwatch _generationStopwatch;
+        Console.WriteLine($"[{DateTime.Now}] Tuner start");
+        SettingsLoader.Init("settings.json");
 
-        public static async Task Main(string[] args)
+        _webService = new WebService();
+        _generationStopwatch = new Stopwatch();
+
+        await _webService.EnableIfAvailable();
+        _testId = await _webService.RegisterTest(new RegisterTestRequest
         {
-            Console.WriteLine($"[{DateTime.Now}] Tuner start");
-            SettingsLoader.Init("settings.json");
+            Type = TestType.SelfPlay
+        });
 
-            _webService = new WebService();
-            _generationStopwatch = new Stopwatch();
+        var selection = new EliteSelection();
+        var crossover = new UniformCrossover(0.5f);
+        var mutation = new UniformMutation(true);
+        var fitness = new EvaluationFitness(_testId, _webService);
+        var chromosome = new EvaluationChromosome();
+        var population = new Population(SettingsLoader.Data.MinPopulation, SettingsLoader.Data.MaxPopulation, chromosome);
 
-            await _webService.EnableIfAvailable();
-            _testId = await _webService.RegisterTest(new RegisterTestRequest
-            {
-                Type = TestType.SelfPlay
-            });
+        var geneticAlgorithm = new GeneticAlgorithm(population, fitness, selection, crossover, mutation)
+        {
+            Termination = new GenerationNumberTermination(SettingsLoader.Data.GenerationsCount)
+        };
+        geneticAlgorithm.GenerationRan += GeneticAlgorithm_GenerationRan;
 
-            var selection = new EliteSelection();
-            var crossover = new UniformCrossover(0.5f);
-            var mutation = new UniformMutation(true);
-            var fitness = new EvaluationFitness(_testId, _webService);
-            var chromosome = new EvaluationChromosome();
-            var population = new Population(SettingsLoader.Data.MinPopulation, SettingsLoader.Data.MaxPopulation, chromosome);
+        _generationStopwatch.Start();
+        geneticAlgorithm.Start();
 
-            var geneticAlgorithm = new GeneticAlgorithm(population, fitness, selection, crossover, mutation)
-            {
-                Termination = new GenerationNumberTermination(SettingsLoader.Data.GenerationsCount)
-            };
-            geneticAlgorithm.GenerationRan += GeneticAlgorithm_GenerationRan;
+        Console.WriteLine("Best solution found has {0} fitness.", geneticAlgorithm.BestChromosome.Fitness);
+        Console.ReadLine();
+    }
 
-            _generationStopwatch.Start();
-            geneticAlgorithm.Start();
+    private static void GeneticAlgorithm_GenerationRan(object sender, EventArgs e)
+    {
+        var geneticAlgorithm = (GeneticAlgorithm)sender;
+        var genesList = new List<string>();
 
-            Console.WriteLine("Best solution found has {0} fitness.", geneticAlgorithm.BestChromosome.Fitness);
-            Console.ReadLine();
+        for (var geneIndex = 0; geneIndex < SettingsLoader.Data.Genes.Count; geneIndex++)
+        {
+            var name = SettingsLoader.Data.Genes[geneIndex].Name;
+            var value = geneticAlgorithm.BestChromosome.GetGene(geneIndex).ToString();
+
+            genesList.Add($"{name}={value}");
         }
 
-        private static void GeneticAlgorithm_GenerationRan(object sender, EventArgs e)
-        {
-            var geneticAlgorithm = (GeneticAlgorithm)sender;
-            var genesList = new List<string>();
+        var generationDataRequest = RequestsFactory.CreateGenerationRequest(_testId, _generationStopwatch.Elapsed.TotalSeconds, geneticAlgorithm.BestChromosome);
+        _webService.SendGenerationData(generationDataRequest).GetAwaiter().GetResult();
 
-            for (var geneIndex = 0; geneIndex < SettingsLoader.Data.Genes.Count; geneIndex++)
-            {
-                var name = SettingsLoader.Data.Genes[geneIndex].Name;
-                var value = geneticAlgorithm.BestChromosome.GetGene(geneIndex).ToString();
+        Console.WriteLine("======================================");
+        Console.WriteLine($"[{DateTime.Now}] Generation done!");
+        Console.WriteLine($" - best chromosome: {string.Join(", ", genesList)}");
+        Console.WriteLine($" - best fitness: {geneticAlgorithm.BestChromosome.Fitness}");
+        Console.WriteLine("======================================");
 
-                genesList.Add($"{name}={value}");
-            }
-
-            var generationDataRequest = RequestsFactory.CreateGenerationRequest(_testId, _generationStopwatch.Elapsed.TotalSeconds, geneticAlgorithm.BestChromosome);
-            _webService.SendGenerationData(generationDataRequest).GetAwaiter().GetResult();
-
-            Console.WriteLine("======================================");
-            Console.WriteLine($"[{DateTime.Now}] Generation done!");
-            Console.WriteLine($" - best chromosome: {string.Join(", ", genesList)}");
-            Console.WriteLine($" - best fitness: {geneticAlgorithm.BestChromosome.Fitness}");
-            Console.WriteLine("======================================");
-
-            _generationStopwatch.Restart();
-        }
+        _generationStopwatch.Restart();
     }
 }

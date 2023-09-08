@@ -1,8 +1,7 @@
-﻿namespace Cosette.Tuner.Web.Database.Models
+﻿namespace Cosette.Tuner.Web.Database.Models;
+
+public class GenerationGeneModel : GeneModel
 {
-    public class GenerationGeneModel : GeneModel
-    {
-        public int GenerationId { get; set; }
-        public virtual GenerationModel Generation { get; set; }
-    }
+    public int GenerationId { get; set; }
+    public virtual GenerationModel Generation { get; set; }
 }

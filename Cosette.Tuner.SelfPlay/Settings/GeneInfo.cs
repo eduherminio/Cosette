@@ -1,15 +1,14 @@
 ﻿using Newtonsoft.Json;
 
-namespace Cosette.Tuner.SelfPlay.Settings
+namespace Cosette.Tuner.SelfPlay.Settings;
+
+public class GeneInfo
 {
-    public class GeneInfo
-    {
-        public string Name { get; set; }
+    public string Name { get; set; }
 
-        [JsonProperty("min_value")]
-        public int MinValue { get; set; }
+    [JsonProperty("min_value")]
+    public int MinValue { get; set; }
 
-        [JsonProperty("max_value")]
-        public int MaxValue { get; set; }
-    }
+    [JsonProperty("max_value")]
+    public int MaxValue { get; set; }
 }

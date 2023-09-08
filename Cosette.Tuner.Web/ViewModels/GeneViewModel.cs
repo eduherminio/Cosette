@@ -1,9 +1,8 @@
-﻿namespace Cosette.Tuner.Web.ViewModels
+﻿namespace Cosette.Tuner.Web.ViewModels;
+
+public class GeneViewModel
 {
-    public class GeneViewModel
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int Value { get; set; }
-    }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public int Value { get; set; }
 }

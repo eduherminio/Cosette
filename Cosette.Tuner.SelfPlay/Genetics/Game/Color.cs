@@ -1,9 +1,8 @@
-﻿namespace Cosette.Tuner.SelfPlay.Genetics.Game
+﻿namespace Cosette.Tuner.SelfPlay.Genetics.Game;
+
+public enum Color
 {
-    public enum Color
-    {
-        None = 0,
-        White = 1,
-        Black = -1
-    }
+    None = 0,
+    White = 1,
+    Black = -1
 }

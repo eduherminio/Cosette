@@ -1,22 +1,21 @@
 ﻿using GeneticSharp;
 
-namespace Cosette.Tuner.Texel.Genetics.ScalingFactor
+namespace Cosette.Tuner.Texel.Genetics.ScalingFactor;
+
+public class ScalingFactorChromosome : ChromosomeBase
 {
-    public class ScalingFactorChromosome : ChromosomeBase
+    public ScalingFactorChromosome() : base(2)
     {
-        public ScalingFactorChromosome() : base(2)
-        {
-            CreateGenes();
-        }
+        CreateGenes();
+    }
 
-        public override Gene GenerateGene(int geneIndex)
-        {
-            return new Gene(RandomizationProvider.Current.GetInt(0, 2000));
-        }
+    public override Gene GenerateGene(int geneIndex)
+    {
+        return new Gene(RandomizationProvider.Current.GetInt(0, 2000));
+    }
 
-        public override IChromosome CreateNew()
-        {
-            return new ScalingFactorChromosome();
-        }
+    public override IChromosome CreateNew()
+    {
+        return new ScalingFactorChromosome();
     }
 }

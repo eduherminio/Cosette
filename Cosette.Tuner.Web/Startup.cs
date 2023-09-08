@@ -7,49 +7,48 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Cosette.Tuner.Web
+namespace Cosette.Tuner.Web;
+
+public class Startup
 {
-    public class Startup
+    private readonly IConfiguration _configuration;
+
+    public Startup(IConfiguration configuration)
     {
-        private readonly IConfiguration _configuration;
+        _configuration = configuration;
+    }
 
-        public Startup(IConfiguration configuration)
+    // This method gets called by the runtime. Use this method to add services to the container.
+    // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddAutoMapper(typeof(Startup));
+
+        services.AddScoped<GenerationService>();
+        services.AddScoped<ChromosomeService>();
+        services.AddScoped<TestService>();
+        services.AddScoped<ChartJsService>();
+
+        services.AddDbContext<DatabaseContext>(options =>
         {
-            _configuration = configuration;
+            options.UseSqlite(_configuration.GetConnectionString("DefaultConnection"));
+        });
+        services.AddMvc();
+    }
+
+    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
+        app.UseRouting();
+        app.UseStaticFiles();
+        app.UseEndpoints(endpoints =>
         {
-            services.AddAutoMapper(typeof(Startup));
-
-            services.AddScoped<GenerationService>();
-            services.AddScoped<ChromosomeService>();
-            services.AddScoped<TestService>();
-            services.AddScoped<ChartJsService>();
-
-            services.AddDbContext<DatabaseContext>(options =>
-            {
-                options.UseSqlite(_configuration.GetConnectionString("DefaultConnection"));
-            });
-            services.AddMvc();
-        }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseRouting();
-            app.UseStaticFiles();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}");
-            });
-        }
+            endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}");
+        });
     }
 }

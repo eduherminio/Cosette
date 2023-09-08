@@ -123,7 +123,7 @@ namespace Cosette.Arbiter.Engine
 
         private string GetExecutableHash()
         {
-            var md5 = new MD5CryptoServiceProvider();
+            var md5 = MD5.Create();
             var path = _enginePath == "dotnet" ? _engineArguments : _enginePath;
 
             using (var streamReader = new StreamReader(path))

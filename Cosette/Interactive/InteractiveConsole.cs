@@ -137,7 +137,7 @@ namespace Cosette.Interactive
         {
             try
             {
-                var md5 = new MD5CryptoServiceProvider();
+                var md5 = MD5.Create();
                 var path = Assembly.GetExecutingAssembly().Location;
 
                 path = string.IsNullOrEmpty(path) ? 

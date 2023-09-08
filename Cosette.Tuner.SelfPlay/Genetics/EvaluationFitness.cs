@@ -6,8 +6,7 @@ using Cosette.Tuner.SelfPlay.Engine;
 using Cosette.Tuner.SelfPlay.Genetics.Game;
 using Cosette.Tuner.SelfPlay.Settings;
 using Cosette.Tuner.SelfPlay.Web;
-using GeneticSharp.Domain.Chromosomes;
-using GeneticSharp.Domain.Fitnesses;
+using GeneticSharp;
 
 namespace Cosette.Tuner.SelfPlay.Genetics
 {

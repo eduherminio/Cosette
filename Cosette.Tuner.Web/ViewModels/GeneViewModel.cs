@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Cosette.Tuner.Web.ViewModels
+﻿namespace Cosette.Tuner.Web.ViewModels
 {
     public class GeneViewModel
     {

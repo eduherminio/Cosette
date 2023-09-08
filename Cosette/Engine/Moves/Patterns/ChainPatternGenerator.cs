@@ -1,6 +1,4 @@
-﻿using Cosette.Engine.Board;
-
-namespace Cosette.Engine.Moves.Patterns
+﻿namespace Cosette.Engine.Moves.Patterns
 {
     public static class ChainPatternGenerator
     {

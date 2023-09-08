@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Cosette.Tuner.Common.Requests;
 using Cosette.Tuner.Web.Database.Models;

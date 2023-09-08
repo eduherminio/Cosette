@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace Cosette.Engine.Ai.Transposition
+﻿namespace Cosette.Engine.Ai.Transposition
 {
     public struct EvaluationHashTableEntry
     {

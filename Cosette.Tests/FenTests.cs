@@ -1,8 +1,5 @@
 ﻿using Cosette.Engine.Ai.Score.PieceSquareTables;
-using Cosette.Engine.Board;
 using Cosette.Engine.Fen;
-using Cosette.Engine.Moves.Magic;
-using Cosette.Engine.Perft;
 using Xunit;
 
 namespace Cosette.Tests

@@ -8,7 +8,6 @@ using Cosette.Engine.Ai.Search;
 using Cosette.Engine.Ai.Time;
 using Cosette.Engine.Common;
 using Cosette.Engine.Moves;
-using Cosette.Logs;
 
 namespace Cosette.Uci.Commands
 {

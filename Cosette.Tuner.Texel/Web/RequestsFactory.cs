@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Cosette.Tuner.Common.Requests;
 using Cosette.Tuner.Texel.Settings;
-using GeneticSharp.Domain.Chromosomes;
+using GeneticSharp;
 
 namespace Cosette.Tuner.Texel.Web
 {

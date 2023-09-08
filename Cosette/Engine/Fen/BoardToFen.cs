@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Net;
 using System.Text;
-using Cosette.Engine.Ai.Search;
 using Cosette.Engine.Board;
 using Cosette.Engine.Common;
 

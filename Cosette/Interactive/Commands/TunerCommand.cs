@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cosette.Engine.Ai.Score;
 using Cosette.Engine.Common;
-using Cosette.Engine.Fen;
 using Cosette.Interactive.Commands.Tuner;
-using Cosette.Uci;
 
 namespace Cosette.Interactive.Commands
 {

@@ -1,6 +1,5 @@
 ﻿using Cosette.Tuner.SelfPlay.Settings;
-using GeneticSharp.Domain.Chromosomes;
-using GeneticSharp.Domain.Randomizations;
+using GeneticSharp;
 
 namespace Cosette.Tuner.SelfPlay.Genetics
 {

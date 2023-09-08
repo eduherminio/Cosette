@@ -1,6 +1,5 @@
 ﻿using System;
 using Cosette.Engine.Ai.Search;
-using Cosette.Engine.Moves;
 
 namespace Cosette.Engine.Ai.Transposition
 {

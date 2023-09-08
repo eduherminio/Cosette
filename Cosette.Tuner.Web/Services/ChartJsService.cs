@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Cosette.Tuner.Web.Database.Models;
 using Cosette.Tuner.Web.ViewModels.ChartJs;
 

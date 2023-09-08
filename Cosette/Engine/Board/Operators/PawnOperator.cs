@@ -1,7 +1,6 @@
 ﻿using System;
 using Cosette.Engine.Common;
 using Cosette.Engine.Moves;
-using Cosette.Engine.Moves.Patterns;
 
 namespace Cosette.Engine.Board.Operators
 {

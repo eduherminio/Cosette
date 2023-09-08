@@ -1,5 +1,4 @@
-﻿using Cosette.Engine.Board;
-using Cosette.Engine.Common;
+﻿using Cosette.Engine.Common;
 
 namespace Cosette.Engine.Moves.Patterns
 {

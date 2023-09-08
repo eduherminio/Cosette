@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using Cosette.Tuner.Texel.Settings;
 
 namespace Cosette.Tuner.Texel.Engine
 {

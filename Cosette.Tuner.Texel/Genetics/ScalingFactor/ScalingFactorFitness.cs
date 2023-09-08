@@ -4,8 +4,7 @@ using Cosette.Tuner.Common.Services;
 using Cosette.Tuner.Texel.Engine;
 using Cosette.Tuner.Texel.Settings;
 using Cosette.Tuner.Texel.Web;
-using GeneticSharp.Domain.Chromosomes;
-using GeneticSharp.Domain.Fitnesses;
+using GeneticSharp;
 
 namespace Cosette.Tuner.Texel.Genetics
 {

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using Cosette.Tuner.Web.Database;
 using Cosette.Tuner.Web.Services;
 using Cosette.Tuner.Web.ViewModels;
-using Cosette.Tuner.Web.ViewModels.ChartJs;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 

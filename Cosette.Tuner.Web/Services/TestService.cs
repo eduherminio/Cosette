@@ -6,7 +6,6 @@ using Cosette.Tuner.Common.Requests;
 using Cosette.Tuner.Web.Database;
 using Cosette.Tuner.Web.Database.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Cosette.Tuner.Web.Services
 {

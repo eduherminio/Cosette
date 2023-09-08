@@ -9,14 +9,7 @@ using Cosette.Tuner.Texel.Genetics;
 using Cosette.Tuner.Texel.Genetics.ScalingFactor;
 using Cosette.Tuner.Texel.Settings;
 using Cosette.Tuner.Texel.Web;
-using GeneticSharp.Domain;
-using GeneticSharp.Domain.Chromosomes;
-using GeneticSharp.Domain.Crossovers;
-using GeneticSharp.Domain.Fitnesses;
-using GeneticSharp.Domain.Mutations;
-using GeneticSharp.Domain.Populations;
-using GeneticSharp.Domain.Selections;
-using GeneticSharp.Domain.Terminations;
+using GeneticSharp;
 
 namespace Cosette.Tuner.Texel
 {

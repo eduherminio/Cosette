@@ -1,5 +1,4 @@
-﻿using System;
-using Cosette.Engine.Ai.Score;
+﻿using Cosette.Engine.Ai.Score;
 using Cosette.Engine.Board;
 using Cosette.Engine.Moves;
 

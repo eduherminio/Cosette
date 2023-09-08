@@ -1,6 +1,5 @@
 ﻿using Cosette.Engine.Board;
 using Cosette.Engine.Common;
-using Cosette.Engine.Moves.Patterns;
 
 namespace Cosette.Engine.Ai.Score.Evaluators
 {

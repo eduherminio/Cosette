@@ -7,12 +7,7 @@ using Cosette.Tuner.Common.Services;
 using Cosette.Tuner.SelfPlay.Genetics;
 using Cosette.Tuner.SelfPlay.Settings;
 using Cosette.Tuner.SelfPlay.Web;
-using GeneticSharp.Domain;
-using GeneticSharp.Domain.Crossovers;
-using GeneticSharp.Domain.Mutations;
-using GeneticSharp.Domain.Populations;
-using GeneticSharp.Domain.Selections;
-using GeneticSharp.Domain.Terminations;
+using GeneticSharp;
 
 namespace Cosette.Tuner.SelfPlay
 {

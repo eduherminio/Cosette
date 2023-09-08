@@ -1,6 +1,5 @@
 ﻿using Cosette.Tuner.Texel.Settings;
-using GeneticSharp.Domain.Chromosomes;
-using GeneticSharp.Domain.Randomizations;
+using GeneticSharp;
 
 namespace Cosette.Tuner.Texel.Genetics
 {

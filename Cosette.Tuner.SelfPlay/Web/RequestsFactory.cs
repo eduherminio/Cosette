@@ -2,7 +2,7 @@
 using Cosette.Tuner.Common.Requests;
 using Cosette.Tuner.SelfPlay.Genetics.Game;
 using Cosette.Tuner.SelfPlay.Settings;
-using GeneticSharp.Domain.Chromosomes;
+using GeneticSharp;
 
 namespace Cosette.Tuner.SelfPlay.Web
 {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Cosette.Engine.Ai.Transposition
+﻿namespace Cosette.Engine.Ai.Transposition
 {
     public enum TranspositionTableEntryFlags : byte
     {

@@ -1,5 +1,4 @@
-﻿using System;
-using Cosette.Tuner.Web.Database.Models;
+﻿using Cosette.Tuner.Web.Database.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -18,7 +17,7 @@ namespace Cosette.Tuner.Web.Database
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
-
+            Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

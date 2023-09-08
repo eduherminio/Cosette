@@ -31,10 +31,10 @@ namespace Cosette.Tuner.Web.Controllers
         {
             var test = id.HasValue ? await _testService.GetTestById(id.Value) : await _testService.GetLastTest();
             var allTests = await _testService.GetAll();
-            var allGenerations = await _generationService.GetAll(test.Id);
-            var bestGenerations = await _generationService.GetBest(test.Id, 25);
-            var allChromosomes = await _chromosomeService.GetAll(test.Id);
-            var bestChromosomes = await _chromosomeService.GetBest(test.Id, 25);
+            var allGenerations = test is null ? new() : await _generationService.GetAll(test.Id);
+            var bestGenerations = test is null ? new() : await _generationService.GetBest(test.Id, 25);
+            var allChromosomes = test is null ? new() : await _chromosomeService.GetAll(test.Id);
+            var bestChromosomes = test is null ? new() : await _chromosomeService.GetBest(test.Id, 25);
 
             var generationFitnessData = _chartJsService.GenerateGenerationFitnessData(allGenerations);
             var chromosomeFitnessData = _chartJsService.GenerateChromosomeFitnessData(allChromosomes);

@@ -43,7 +43,7 @@
                     </div>
                 </div>
             </div>
-            @if (Model.CurrentTest.Type == TestType.SelfPlay)
+            @if (Model.CurrentTest?.Type == TestType.SelfPlay)
             {
                 <div class="row container-fluid">
                     <div class="col-md-4">
@@ -146,7 +146,7 @@
                                             <th>Creation time UTC</th>
                                             <th>Elapsed time</th>
                                             <th>Fitness</th>
-                                            @if (Model.CurrentTest.Type == TestType.SelfPlay)
+                                            @if (Model.CurrentTest?.Type == TestType.SelfPlay)
                                             {
                                                 <th>EE wins</th>
                                                 <th>EE losses</th>
@@ -163,7 +163,7 @@
                                                 <td>@Model.BestChromosomes[i].CreationTimeUtc</td>
                                                 <td>@Model.BestChromosomes[i].ElapsedTime.ToString("F1")</td>
                                                 <td>@Model.BestChromosomes[i].Fitness</td>
-                                                @if (Model.CurrentTest.Type == TestType.SelfPlay)
+                                                @if (Model.CurrentTest?.Type == TestType.SelfPlay)
                                                 {
                                                     <td>@Model.BestChromosomes[i].ExperimentalEngineStatistics.Wins</td>
                                                     <td>@Model.BestChromosomes[i].ReferenceEngineStatistics.Wins</td>
@@ -187,7 +187,7 @@
                                             <th>Creation time UTC</th>
                                             <th>Elapsed time</th>
                                             <th>Fitness</th>
-                                            @if (Model.CurrentTest.Type == TestType.SelfPlay)
+                                            @if (Model.CurrentTest?.Type == TestType.SelfPlay)
                                             {
                                                 <th>EE wins</th>
                                                 <th>EE losses</th>
@@ -204,7 +204,7 @@
                                                 <td>@Model.AllChromosomes[i].CreationTimeUtc</td>
                                                 <td>@Model.AllChromosomes[i].ElapsedTime.ToString("F1")</td>
                                                 <td>@Model.AllChromosomes[i].Fitness</td>
-                                                @if (Model.CurrentTest.Type == TestType.SelfPlay)
+                                                @if (Model.CurrentTest?.Type == TestType.SelfPlay)
                                                 {
                                                     <td>@Model.AllChromosomes[i].ExperimentalEngineStatistics.Wins</td>
                                                     <td>@Model.AllChromosomes[i].ReferenceEngineStatistics.Wins</td>
